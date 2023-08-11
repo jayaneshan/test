@@ -1,0 +1,22 @@
+class student:
+  def __init__(self,name,mark):
+      self.name=name
+      self.mark=mark
+def prog():                
+        num= int(input("no of students:"))
+        tot_list=[]
+        for i in range(num):
+            name = input("name:")
+            mark=[]
+            for j in range(6):                
+                m=int(input("mark %d:"%(j+1)))
+                mark.append(m)
+            tot=student(name,mark)
+            tot_list.append(tot)
+        print("\ndisplay:")    
+        for s in tot_list:
+            print("\nname:",s.name)      
+            for j in range(6):
+                print("mark %d:"%(j+1),s.mark[j])
+            print("sum:",sum(s.mark))           
+prog()
