@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Table to Line Chart</title>
+    <style>
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 10px; text-align: center; border: 1px solid #ccc; }
+        input { width: 70px; }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+</head>
+<body>
+    <h1>2-Column 6-Row Table</h1>
+    <table id="inputTable"><tr><th>Input 1</th><th>Input 2</th></tr></table>
+    <button onclick="storeValues()">Store Values & Create Chart</button>
+    <h3>Result: <span id="result">Chart will appear below.</span></h3>
+    <canvas id="myChart" style="width:100px;height:100px;max-width:700px"></canvas>
+
+    <script>
+        // Dynamically create the table rows and columns
+        for (let i = 1; i <= 6; i++) {
+            document.getElementById('inputTable').innerHTML += `
+                <tr><td><input type="number" id="row${i}col1" onkeydown="moveFocus(event, ${i}, 1)"></td>
+                <td><input type="number" id="row${i}col2" onkeydown="moveFocus(event, ${i}, 2)"></td></tr>`;
+        }
+
+        // Move focus between input fields using the Enter key
+        function moveFocus(event, row, col) {
+            if (event.key === 'Enter') {
+                let nextRow = col === 2 ? row + 1 : row;
+                let nextCol = col === 2 ? 1 : col + 1;
+                if (nextRow <= 6) document.getElementById(`row${nextRow}col${nextCol}`).focus();
+            }
+        }
+
+        // Function to store values in arrays and create a line chart
+        function storeValues() {
+            let col1Values = [];  // Store values for Column 1 (x-axis)
+            let col2Values = [];  // Store values for Column 2 (y-axis)
+
+            // Loop through all 6 rows and get the values for each column
+            for (let i = 1; i <= 6; i++) {
+                let col1Value = parseFloat(document.getElementById(`row${i}col1`).value) || 0;
+                let col2Value = parseFloat(document.getElementById(`row${i}col2`).value) || 0;
+
+                // Store values in the arrays
+                col1Values.push(col1Value);  // Column 1 data (x-axis)
+                col2Values.push(col2Value);  // Column 2 data (y-axis)
+            }
+
+            // Create the line chart with Column 1 on the x-axis and Column 2 on the y-axis
+            createLineChart(col1Values, col2Values);
+            document.getElementById('result').textContent = "Chart created! Check below.";
+        }
+
+        // Function to create the line chart
+        function createLineChart(xValues, yValues) {
+           new Chart("myChart", {
+  type: "line",
+  data: {
+  
+    labels: xValues,
+    datasets: [{
+      fill: false,
+      lineTension: 0.4,
+      backgroundColor: "rgba(0,0,255,1.0)",
+      borderColor: "rgba(0,0,255,0.1)",
+      data: yValues
+    }]
+  },
+  options: {
+  responsive:true,
+maintainAspectRatio:true,
+    legend: {display: false},
+    scales: {
+      yAxes: [{ticks: {min: 0, max:80,stepSize: 5}}],
+    }
+  }
+}); 
+        }
+    </script>
+</body>
+</html>
+
