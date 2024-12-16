@@ -20,3 +20,86 @@ def prog():
                 print("mark %d:"%(j+1),s.mark[j])
             print("sum:",sum(s.mark))           
 prog()
+
+#include <stdio.h>
+
+#define ROWS 5
+#define COLS 5
+
+int main() {
+    // 2D array to represent parking lot (all spots initialized to 0 - empty)
+    int parkingLot[ROWS][COLS] = {0};  // Initialize array with all 0s
+
+    int choice, row, col;
+
+    while (1) {
+        // Display menu
+        puts("\nParking Lot Management");
+        puts("1. Display Parking Lot");
+        puts("2. Park a Car");
+        puts("3. Remove a Car");
+        puts("4. Exit");
+        puts("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                // Display current status of parking lot
+                puts("\nParking Lot Status:");
+                for (int i = 0; i < ROWS; i++) {
+                    for (int j = 0; j < COLS; j++) {
+                        if (parkingLot[i][j] == 0)
+                            printf("[ ] ");  // Empty space
+                        else
+                            printf("[X] ");  // Occupied space
+                    }
+                    printf("\n");
+                }
+                break;
+
+            case 2:
+                // Park a car
+                printf("Enter row (0-4) and column (0-4) to park: ");
+                scanf("%d %d", &row, &col);
+
+                if (row >= 0 && row < ROWS && col >= 0 && col < COLS) {
+                    if (parkingLot[row][col] == 0) {
+                        parkingLot[row][col] = 1; // Park the car (1 = occupied)
+                        printf("Car parked at [%d][%d].\n", row, col);
+                    } else {
+                        printf("Spot [%d][%d] is already taken!\n", row, col);
+                    }
+                } else {
+                    puts("Invalid spot!");
+                }
+                break;
+
+            case 3:
+                // Remove a car
+                printf("Enter row (0-4) and column (0-4) to remove car: ");
+                scanf("%d %d", &row, &col);
+
+                if (row >= 0 && row < ROWS && col >= 0 && col < COLS) {
+                    if (parkingLot[row][col] == 1) {
+                        parkingLot[row][col] = 0; // Remove the car (0 = empty)
+                        printf("Car removed from [%d][%d].\n", row, col);
+                    } else {
+                        printf("Spot [%d][%d] is already empty!\n", row, col);
+                    }
+                } else {
+                    puts("Invalid spot!");
+                }
+                break;
+
+            case 4:
+                // Exit program
+                puts("Exiting the program.");
+                return 0;
+
+            default:
+                puts("Invalid choice. Please try again.");
+        }
+    }
+
+    return 0;
+}
